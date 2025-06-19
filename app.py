@@ -6,7 +6,7 @@ from database import inicializar_banco, carregar_medicamentos, carregar_registos
 from validacao import validar_dose, verificar_incompatibilidade
 
 # Configura a página da App
-st.set_page_config(page_title="SAFE-CALC Web App", layout="centered")
+st.set_page_config(page_title="SAFE-CALC Web App", page_icon="favicon.ico", layout="centered")
 
 st.title("SAFE-CALC – Validação de Prescrição IV")
 st.write("Aplicação web para validar se uma prescrição intravenosa é segura com base em parâmetros clínicos.")
