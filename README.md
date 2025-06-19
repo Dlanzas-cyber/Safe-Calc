@@ -1,9 +1,11 @@
-# SAFE-CALC CLI
+# SAFE-CALC CLI Web App
 
-Aplicação de linha de comandos para validação de prescrição IV em UCI pediátrica/neonatal.
+Aplicação web para validação de prescrições IV em UCI pediátrica/neonatal.
 
-## Como usar
+## Como Utilizar
 
 1. Instale as dependências:
    ```bash
    pip install -r requirements.txt
+
+
