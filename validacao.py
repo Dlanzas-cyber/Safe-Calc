@@ -1,31 +1,36 @@
 def validar_dose(peso, dose, unidade_input, medicamento):
     """
     Valida a dose prescrita considerando o peso do paciente.
-    Verifica se a unidade coincide com a esperada (armazenada em 'unidade_dose')
-    e se a dose, multiplicada por peso, se encontra dentro do intervalo seguro.
-    
-    Os campos 'dose_minima' e 'dose_maxima' no Excel devem conter a dose recomendada por kg.
+    Converte a dose para mg e a compara com o intervalo seguro,
+    usando os valores 'dose_minima' e 'dose_maxima' (por kg) do medicamento.
     """
-    # Verificar se a unidade de entrada é igual à esperada
-    if unidade_input != medicamento["unidade_dose"]:
-        return ("erro_unidade", f"Unidade incorreta. Deve ser {medicamento['unidade_dose']}.")
-    
-    # Cálculo das doses seguras com base no peso do paciente
+    # Converter a dose para mg conforme a unidade
+    if unidade_input == "mg":
+        dose_mg = dose
+    elif unidade_input == "gr":
+        dose_mg = dose * 1000
+    elif unidade_input == "mcg":
+        dose_mg = dose / 1000
+    elif unidade_input == "UI":
+        return ("erro_unidade", "Conversão não disponível para a unidade UI.")
+    else:
+        return ("erro_unidade", f"Unidade {unidade_input} desconhecida.")
+
+    # Calcular o total seguro com base no peso (dose por kg)
     dose_minima_total = medicamento["dose_minima"] * peso
     dose_maxima_total = medicamento["dose_maxima"] * peso
 
-    if dose < dose_minima_total:
-        return ("dose_baixa", f"Dose prescrita {dose} é inferior à dose mínima de {dose_minima_total}.")
-    elif dose > dose_maxima_total:
-        return ("dose_alta", f"Dose prescrita {dose} é superior à dose máxima de {dose_maxima_total}.")
+    if dose_mg < dose_minima_total:
+        return ("dose_baixa", f"Dose prescrita ({dose_mg:.3f} mg) é inferior à dose mínima ({dose_minima_total:.3f} mg).")
+    elif dose_mg > dose_maxima_total:
+        return ("dose_alta", f"Dose prescrita ({dose_mg:.3f} mg) é superior à dose máxima ({dose_maxima_total:.3f} mg).")
     else:
-        return ("ok", f"Dose prescrita {dose} está dentro do intervalo seguro ({dose_minima_total} - {dose_maxima_total}).")
+        return ("ok", f"Dose prescrita ({dose_mg:.3f} mg) está dentro do intervalo seguro ({dose_minima_total:.3f} - {dose_maxima_total:.3f} mg).")
 
 def verificar_incompatibilidade(compat_input, medicamento):
     """
-    Verifica se os medicamentos informados (como uma string, separados por vírgula)
+    Verifica se os medicamentos informados (em uma string, separados por vírgula)
     estão listados como incompatíveis no registro do medicamento.
-    
     Retorna uma lista com as incompatibilidades encontradas.
     """
     lista_incomp = str(medicamento["incompativeis"]).split(",")
