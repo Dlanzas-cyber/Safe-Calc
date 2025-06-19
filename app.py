@@ -8,7 +8,7 @@ from validacao import validar_dose, verificar_incompatibilidade
 # Configurar a página da app com título, ícone e layout centralizado
 st.set_page_config(
     page_title="SAFE-CALC Web App",
-    page_icon=":rocket:",  # Se tiver um favicon personalizado, pode usar "favicon.ico"
+    page_icon=":safe-calc.ico:",  # Se tiver um favicon personalizado, pode usar "favicon.ico"
     layout="centered"
 )
 
@@ -107,4 +107,16 @@ if st.button("Registar Validação"):
         "data_hora": [datetime.now().isoformat()],
         "peso": [peso],
         "medicamento": [medicamento_selecionado],
-        "dosis":
+        "dosis": [dose_prescrita],
+        "unidade": [unidade_dose_input],
+        "via": [via],
+        "resultado": [msg_dose],
+        "observacao_calculo": [""]
+    })
+    df_registos = pd.concat([df_registos, novo_registo], ignore_index=True)
+    salvar_registos(df_registos)
+    st.success("Registo guardado com sucesso!")
+
+if st.checkbox("Mostrar Histórico de Registos"):
+    df_registos = carregar_registos()
+    st.dataframe(df_registos)
