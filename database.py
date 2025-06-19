@@ -8,8 +8,8 @@ REGISTROS_FILE = "registos.xlsx"
 def inicializar_banco():
     """
     Inicializa a base de dados.
-    Se os ficheiros 'medicamentos.xlsx' ou 'registos.xlsx' nao existirem,
-    eles sao criados com dados de exemplo (para medicamentos) ou com a estrutura vazia (para registos).
+    Se os ficheiros 'medicamentos.xlsx' ou 'registos.xlsx' não existirem,
+    eles são criados com dados de exemplo (para medicamentos) ou com estrutura vazia (para registos).
     """
     if not os.path.exists(MEDICAMENTOS_FILE):
         df_med = pd.DataFrame({
@@ -25,14 +25,14 @@ def inicializar_banco():
                 "mg", "mg", "mg", "mg",
                 "mg", "mg", "mg", "mg"
             ],
-            # Os valores de dose_minima e dose_maxima sao considerados por kg
+            # Os valores abaixo correspondem à dose mínima e máxima recomendada por kg
             "dose_minima": [0.1, 0.05, 0.15, 0.1, 0.1, 0.04, 0.25, 0.1],
             "dose_maxima": [1.0, 0.5, 0.2, 0.6, 0.15, 0.075, 1.0, 0.2],
             "concentracao_maxima": [
                 "1 mg/ml", "50 mcg/ml", "20 mg/ml", "100 mg/ml",
                 "5 mg/ml", "1.5 mg/ml", "100 mg/ml", "20 mg/ml"
             ],
-            # Usamos 'diluicao_sugerida' para que fique alinhado com o app.py
+            # Usamos 'diluicao_sugerida' para ficar alinhado com o app.py
             "diluicao_sugerida": [
                 "10 mg em 50 ml SG5%", "500 mcg em 50 ml SG5%",
                 "50–100 mg em 10–20 ml", "500 mg em 50 ml SF ou SG5%",
@@ -53,12 +53,12 @@ def inicializar_banco():
             ],
             "observacoes": [
                 "Ajustar dose em RN prematuros. Risco de apneia. (GFN)",
-                "Vigiar rigidez toracica em bolus rapidos. (MI)",
-                "Usar filtro em perfusao. Risco de hipotensao. (GFN)",
-                "Evitar mistura com sais de calcio. (Pediamecum)",
-                "Evitar associacao com aminoglicosideos (nefrotoxicidade). (GFN)",
-                "Monitorizar funcao renal. (MI)",
-                "Solucao instavel apos reconstituicao (usar em <1 hora). (GFN)",
+                "Vigiar rigidez torácica em bolus rápidos. (MI)",
+                "Usar filtro em perfusão. Risco de hipotensão. (GFN)",
+                "Evitar mistura com sais de cálcio. (Pediamecum)",
+                "Evitar associação com aminoglicósideos (nefrotoxicidade). (GFN)",
+                "Monitorizar função renal. (MI)",
+                "Solução instável após reconstituição (usar em <1 hora). (GFN)",
                 "Monitorizar FC. Metabolismo lento em RN. (GFN)"
             ]
         })
@@ -66,9 +66,10 @@ def inicializar_banco():
             df_med.to_excel(writer, index=False)
     
     if not os.path.exists(REGISTROS_FILE):
+        # Para os registros, eliminamos os campos de diluição_final e compatibilidades, conforme solicitado
         df_reg = pd.DataFrame(columns=[
             "data_hora", "peso", "medicamento", "dosis", "unidade", "via",
-            "diluicao_final", "compatibilidades_input", "resultado", "observacao_calculo"
+            "resultado", "observacao_calculo"
         ])
         with pd.ExcelWriter(REGISTROS_FILE, engine="openpyxl") as writer:
             df_reg.to_excel(writer, index=False)
