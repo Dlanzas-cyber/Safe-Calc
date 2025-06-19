@@ -1,16 +1,16 @@
-# database.py
 import os
 import pandas as pd
 
-# Nomes dos ficheiros de dados
+# Definição dos nomes dos ficheiros de dados
 MEDICAMENTOS_FILE = "medicamentos.xlsx"
 REGISTROS_FILE = "registos.xlsx"
 
 def inicializar_banco():
     """
     Verifica se os ficheiros de dados existem.
-    Se não existirem, cria-os com dados de exemplo para medicamentos
-    e uma estrutura vazia para registos.
+    Se não existirem, cria:
+       - "medicamentos.xlsx" com dados de exemplo.
+       - "registos.xlsx" com estrutura vazia.
     """
     if not os.path.exists(MEDICAMENTOS_FILE):
         df_med = pd.DataFrame({
@@ -74,14 +74,14 @@ def inicializar_banco():
             df_reg.to_excel(writer, index=False)
 
 def carregar_medicamentos():
-    """Retorna um DataFrame com os medicamentos a partir do ficheiro Excel."""
+    """Carrega e retorna o DataFrame com os medicamentos."""
     return pd.read_excel(MEDICAMENTOS_FILE, engine="openpyxl")
 
 def carregar_registos():
-    """Retorna um DataFrame com os registos armazenados no ficheiro Excel."""
+    """Carrega e retorna o DataFrame com os registos."""
     return pd.read_excel(REGISTROS_FILE, engine="openpyxl")
 
 def salvar_registos(df):
-    """Guarda o DataFrame de registos no ficheiro Excel."""
+    """Guarda o DataFrame fornecido no ficheiro 'registos.xlsx'."""
     with pd.ExcelWriter(REGISTROS_FILE, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)

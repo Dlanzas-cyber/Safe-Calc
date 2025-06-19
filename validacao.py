@@ -1,10 +1,8 @@
-# validacao.py
-
 def validar_dose(peso, dose, unidade_input, medicamento):
     """
     Valida a dose prescrita:
-      - Verifica se a unidade está correta.
-      - Verifica se a dose está dentro do intervalo seguro definido.
+        - Verifica se a unidade coincide com a esperada.
+        - Compara a dose com os limites seguros (entre dose_minima e dose_maxima).
     """
     if unidade_input != medicamento["unidade_dose"]:
         return ("erro_unidade", f"Unidade incorreta. Deve ser {medicamento['unidade_dose']}")
@@ -18,8 +16,8 @@ def validar_dose(peso, dose, unidade_input, medicamento):
 
 def verificar_incompatibilidade(compat_input, medicamento):
     """
-    Verifica se os medicamentos indicados no input
-    aparecem na lista dos incompatíveis definidos para o fármaco.
+    Verifica se os medicamentos informados (input) estão entre os incompatíveis do fármaco.
+    Retorna uma lista das incompatibilidades encontradas.
     """
     lista_incomp = str(medicamento["incompativeis"]).split(",")
     lista_incomp = [item.strip().lower() for item in lista_incomp if item.strip()]
