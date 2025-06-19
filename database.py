@@ -1,49 +1,49 @@
 import os
 import pandas as pd
 
-# Definição dos nomes dos ficheiros de dados
+# Definir os nomes dos ficheiros de dados
 MEDICAMENTOS_FILE = "medicamentos.xlsx"
 REGISTROS_FILE = "registos.xlsx"
 
 def inicializar_banco():
     """
-    Verifica se os ficheiros de dados existem.
-    Se não existirem, cria:
-       - "medicamentos.xlsx" com dados de exemplo.
-       - "registos.xlsx" com estrutura vazia.
+    Inicializa a base de dados.
+    Se os ficheiros 'medicamentos.xlsx' ou 'registos.xlsx' nao existirem,
+    eles sao criados com dados de exemplo (para medicamentos) ou com a estrutura vazia (para registos).
     """
     if not os.path.exists(MEDICAMENTOS_FILE):
         df_med = pd.DataFrame({
             "nome": [
                 "Morfina", "Fentanil", "Fenobarbital", "Levetiracetam",
-                "Vancomicina", "Gentamicina", "Ampicilina", "Citrato de cafeína"
+                "Vancomicina", "Gentamicina", "Ampicilina", "Citrato de cafeina"
             ],
             "tipo": [
-                "Opioide", "Opioide", "Antiepiléptico", "Antiepiléptico",
-                "Antibiótico", "Antibiótico", "Antibiótico", "Estimulante respiratório"
+                "Opioide", "Opioide", "Antiepileptico", "Antiepileptico",
+                "Antibiotico", "Antibiotico", "Antibiotico", "Estimulante respiratorio"
             ],
             "unidade_dose": [
-                "mcg/kg/h", "mcg/kg/h", "mg/kg/dose", "mg/kg/dose",
-                "mg/kg/dose", "mg/kg/dose", "mg/kg/dose", "mg/kg/dose"
+                "mg", "mg", "mg", "mg",
+                "mg", "mg", "mg", "mg"
             ],
-            "dose_minima": [10, 0.5, 15, 10, 10, 4, 25, 10],
-            "dose_maxima": [100, 5, 20, 60, 15, 7.5, 100, 20],
-            "dose_terapeutica": ["--"] * 8,
+            # Os valores de dose_minima e dose_maxima sao considerados por kg
+            "dose_minima": [0.1, 0.05, 0.15, 0.1, 0.1, 0.04, 0.25, 0.1],
+            "dose_maxima": [1.0, 0.5, 0.2, 0.6, 0.15, 0.075, 1.0, 0.2],
             "concentracao_maxima": [
                 "1 mg/ml", "50 mcg/ml", "20 mg/ml", "100 mg/ml",
                 "5 mg/ml", "1.5 mg/ml", "100 mg/ml", "20 mg/ml"
             ],
-            "diluicao_recomendada": [
+            # Usamos 'diluicao_sugerida' para que fique alinhado com o app.py
+            "diluicao_sugerida": [
                 "10 mg em 50 ml SG5%", "500 mcg em 50 ml SG5%",
                 "50–100 mg em 10–20 ml", "500 mg em 50 ml SF ou SG5%",
                 "500 mg em 100 ml SG5%", "10 mg/kg em 25–50 ml SG5%",
                 "1 g em 10 ml SF", "10–20 mg em 10 ml SG5%"
             ],
             "forma_de_administracao": [
-                "Perfusão contínua", "Perfusão ou bólus lento",
-                "Bólus IV lento", "Infusão IV em 15 min",
-                "Infusão IV prolongada (>60 min)", "Bólus ou infusão lenta",
-                "Bólus ou perfusão curta", "Bólus IV lento"
+                "Perfusao continua", "Perfusao ou bolus lento",
+                "Bolus IV lento", "Infusao IV em 15 min",
+                "Infusao IV prolongada (>60 min)", "Bolus ou infusao lenta",
+                "Bolus ou perfusao curta", "Bolus IV lento"
             ],
             "compativeis": [
                 "Midazolam", "Midazolam", "", "", "", "", "Gentamicina", ""
@@ -53,12 +53,12 @@ def inicializar_banco():
             ],
             "observacoes": [
                 "Ajustar dose em RN prematuros. Risco de apneia. (GFN)",
-                "Vigiar rigidez torácica em bolos rápidos. (MI)",
-                "Usar filtro em perfusão. Risco de hipotensão. (GFN)",
-                "Evitar mistura com sais de cálcio. (Pediamecum)",
-                "Evitar associação com aminoglicosídeos (nefrotoxicidade). (GFN)",
-                "Monitorizar função renal. (MI)",
-                "Solução instável após reconstituição (usar em <1 hora). (GFN)",
+                "Vigiar rigidez toracica em bolus rapidos. (MI)",
+                "Usar filtro em perfusao. Risco de hipotensao. (GFN)",
+                "Evitar mistura com sais de calcio. (Pediamecum)",
+                "Evitar associacao com aminoglicosideos (nefrotoxicidade). (GFN)",
+                "Monitorizar funcao renal. (MI)",
+                "Solucao instavel apos reconstituicao (usar em <1 hora). (GFN)",
                 "Monitorizar FC. Metabolismo lento em RN. (GFN)"
             ]
         })
@@ -74,14 +74,14 @@ def inicializar_banco():
             df_reg.to_excel(writer, index=False)
 
 def carregar_medicamentos():
-    """Carrega e retorna o DataFrame com os medicamentos."""
+    """Carrega e retorna um DataFrame a partir do ficheiro 'medicamentos.xlsx'."""
     return pd.read_excel(MEDICAMENTOS_FILE, engine="openpyxl")
 
 def carregar_registos():
-    """Carrega e retorna o DataFrame com os registos."""
+    """Carrega e retorna um DataFrame a partir do ficheiro 'registos.xlsx'."""
     return pd.read_excel(REGISTROS_FILE, engine="openpyxl")
 
 def salvar_registos(df):
-    """Guarda o DataFrame fornecido no ficheiro 'registos.xlsx'."""
+    """Salva o DataFrame fornecido no ficheiro 'registos.xlsx'."""
     with pd.ExcelWriter(REGISTROS_FILE, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
